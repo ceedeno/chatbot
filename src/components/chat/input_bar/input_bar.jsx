@@ -5,9 +5,12 @@ import SendIcon from '@mui/icons-material/Send';
 import TextField from '@mui/material/TextField';
 import { sendMessage } from '../../../redux/actions/chat';
 import { openEditor, setEditorContent } from '../../../redux/actions/editor';
-import { generateNewMessage } from '../../../utility/helpers';
+import { generateNewMessage, tryParseInt } from '../../../utility/helpers';
 import { isInputUnsafe } from '../../../utility/validator';
 import PropTypes from 'prop-types';
+import { userType } from '../../../utility/constants';
+import openAiService from '../../../utility/openia_service';
+import { setSentiment } from '../../../redux/actions/sentiment';
 
 function InputBar({ message, setMessage}) {
     const currentUser = useSelector((state) => state.currentUser.currentUserInfo);
@@ -24,6 +27,14 @@ function InputBar({ message, setMessage}) {
             currentUser?.userId,
             recipientInfo?.userId)));
         setMessage('');
+
+        if (currentUser.userType === userType.customer) {
+            openAiService.getCustomerSentiment(message)
+                .then((response) => {
+                    dispatch(setSentiment(tryParseInt(response)));
+                })
+                .catch((error) => console.log(error));
+        }
     };
 
     const handleEdit = () => {

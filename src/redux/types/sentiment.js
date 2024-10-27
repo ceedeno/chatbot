@@ -1,0 +1,1 @@
+export const SET_MESSAGE_SENTIMENT = 'set_message_sentiment';

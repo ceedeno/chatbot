@@ -55,3 +55,5 @@ export const MESSAGE_TEMPLATES = [
         text: 'You will need income proof, tax returns, bank statements, and identification.'
     },
 ];
+
+export const MESSAGE_SENTIMENT_DESCRIPTION = 'Message sentiment measures the emotional tone of a message, rated from 1 to 10: 1-3 for negative, 4-7 for neutral, and 8-10 for positive sentiments.';

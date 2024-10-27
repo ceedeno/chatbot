@@ -21,3 +21,17 @@ export const removeHTMLTags = (htmlString) => {
     // Trim whitespace
     return textContent.trim();
 };
+
+export const tryParseInt = (str, defaultValue = 0) => {
+    try {
+      const num = parseInt(str, 10);
+      if (isNaN(num)) {
+        console.log('NaN while tryParseInt()');
+        return defaultValue;
+      }
+      return num;
+    } catch (error) {
+        console.log('Error while tryParseInt()', error);
+      return defaultValue;
+    }
+  };
