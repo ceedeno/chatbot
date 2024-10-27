@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import { Box, Button, Card, CardActions, CardContent, Divider, Paper, Skeleton, TextField, Typography } from '@mui/material';
 import SendIcon from '@mui/icons-material/Send';
 import openAiService from '../../utility/openia_service';
@@ -9,37 +9,37 @@ import { openEditor, setEditorContent } from '../../redux/actions/editor';
 
 function Assistant() {
     const [suggestedResponse, setSuggestedResponse] = useState('');
-    const [newCustomerQuery, SetNewCustomerQuery] = useState('');
-    const [lastCustomerQuery, SetLastCustomerQuery] = useState('');
+    const [newCustomerQuery, setNewCustomerQuery] = useState('');
+    const [lastCustomerQuery, setLastCustomerQuery] = useState('');
     const currentUser = useSelector((state) => state.currentUser.currentUserInfo);
     const recipientInfo = useSelector((state) => state.chat.recipientInfo);
     const dispatch = useDispatch();
 
-    const handleInputChange = (e) => {
-        SetNewCustomerQuery(e.target.value);
-    };
+    const handleInputChange = useCallback((e) => {
+        setNewCustomerQuery(e.target.value);
+    }, []);
 
-    const handleSendMessageToAssistant = () => {
+    const handleSendMessageToAssistant = useCallback(() => {
         openAiService.getSuggestedResponse(newCustomerQuery)
             .then((response) => {
                 setSuggestedResponse(response);
             })
             .catch((error) => console.log(error));
-        SetLastCustomerQuery(newCustomerQuery);
-        SetNewCustomerQuery('');
-    };
+        setLastCustomerQuery(newCustomerQuery);
+        setNewCustomerQuery('');
+    }, [newCustomerQuery]);
 
-    const handleSendMessageToCustomer = () => {
+    const handleSendMessageToCustomer = useCallback(() => {
         dispatch(sendMessage(generateNewMessage(
             suggestedResponse,
             currentUser?.userId,
             recipientInfo?.userId)));
-    };
+    }, [currentUser?.userId, dispatch, recipientInfo?.userId, suggestedResponse]);
 
-    const handleEditSuggestion = () => {
+    const handleEditSuggestion = useCallback(() => {
         dispatch(setEditorContent(suggestedResponse));
         dispatch(openEditor());
-    };
+    }, [dispatch, suggestedResponse]);
 
     return (
         <Paper elevation={3} sx={{ height: '480px', minWidth: '350px' }}>

@@ -1,12 +1,11 @@
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, styled } from '@mui/material';
 import PropTypes from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
-import { closeEditor } from '../../../../redux/actions/editor';
+import { closeEditor, setEditorContent } from '../../../../redux/actions/editor';
 import Document from '@tiptap/extension-document';
 import Paragraph from '@tiptap/extension-paragraph';
 import Text from '@tiptap/extension-text';
 import Highlight from '@tiptap/extension-highlight';
-import { useState } from 'react';
 import { EditorContent, useEditor } from '@tiptap/react';
 import Underline from '@tiptap/extension-underline';
 import Bold from '@tiptap/extension-bold';
@@ -14,6 +13,7 @@ import Italic from '@tiptap/extension-italic';
 import Strike from '@tiptap/extension-strike';
 import { sendMessage } from '../../../../redux/actions/chat';
 import { generateNewMessage } from '../../../../utility/helpers';
+import { useCallback } from 'react';
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
     '& .MuiDialogContent-root': {
@@ -24,7 +24,7 @@ const BootstrapDialog = styled(Dialog)(({ theme }) => ({
     },
 }));
 
-const Editor = ({ setEditorUpdatedContent, content }) => {
+const Editor = ({ onEditorUpdate, content }) => {
     const editor = useEditor({
         extensions: [
             Document,
@@ -38,7 +38,7 @@ const Editor = ({ setEditorUpdatedContent, content }) => {
         ],
         content,
         onUpdate({ editor }) {
-            setEditorUpdatedContent(editor.getHTML());
+            onEditorUpdate(editor.getHTML());
         }
     });
 
@@ -87,31 +87,33 @@ const Editor = ({ setEditorUpdatedContent, content }) => {
 
 Editor.propTypes = {
     content: PropTypes.string.isRequired,
-    setEditorUpdatedContent: PropTypes.func.isRequired
+    onEditorUpdate: PropTypes.func.isRequired
 };
 
 const MessageEditor = ({ setInputMessage }) => {
     const currentUser = useSelector((state) => state.currentUser.currentUserInfo);
     const recipientInfo = useSelector((state) => state.chat.recipientInfo);
-    const [editorUpdatedContent, setEditorUpdatedContent] = useState(null);
     const openEditor = useSelector((state) => state.editor.open);
     const editorContent = useSelector((state) => state.editor.content);
     const dispatch = useDispatch();
 
-    const handleClose = () => {
+    const handleClose = useCallback(() => {
         dispatch(closeEditor());
-    };
+    }, [dispatch]);
 
-    const handleSendToCustomer = () => {
-        console.log(editorUpdatedContent);
+    const handleEditorUpdate = useCallback((newContent) => {
+        dispatch(setEditorContent(newContent));
+    }, [dispatch]);
+
+    const handleSendToCustomer = useCallback(() => {
         dispatch(sendMessage(generateNewMessage(
-            editorUpdatedContent,
+            editorContent,
             currentUser?.userId,
             recipientInfo?.userId)));
         setInputMessage('');
-        setEditorUpdatedContent(null);
+        dispatch(setEditorContent(''));
         handleClose();
-    };
+    }, [currentUser?.userId, dispatch, editorContent, handleClose, recipientInfo?.userId, setInputMessage]);
 
     if (!openEditor) {
         return null;
@@ -130,7 +132,7 @@ const MessageEditor = ({ setInputMessage }) => {
                 </DialogTitle>
                 <DialogContent dividers>
                     <Editor
-                        setEditorUpdatedContent={setEditorUpdatedContent}
+                        onEditorUpdate={handleEditorUpdate}
                         content={editorContent}
                     />
                 </DialogContent>

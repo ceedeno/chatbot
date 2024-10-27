@@ -53,7 +53,7 @@ function Message({ content, senderId }) {
 
     const handleCopy = async () => {
         const pureStringContent = removeHTMLTags(content);
-        await navigator.clipboard.writeText(removeHTMLTags(pureStringContent));
+        await navigator.clipboard.writeText(pureStringContent);
     };
 
     return (
