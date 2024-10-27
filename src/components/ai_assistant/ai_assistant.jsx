@@ -1,8 +1,7 @@
 import { useState } from 'react';
 import { Box, Button, Card, CardActions, CardContent, Divider, Paper, Skeleton, TextField, Typography } from '@mui/material';
 import SendIcon from '@mui/icons-material/Send';
-import { OPENAI_API_KEY } from '../../utility/constants';
-import { SYSTEM_CONTEXT_SUDGESTION_PROMP } from '../../utility/assistant_promps';
+import openAiService from '../../utility/openia_service';
 import { useDispatch, useSelector } from 'react-redux';
 import { sendMessage } from '../../redux/actions/chat';
 import { generateNewMessage } from '../../utility/helpers';
@@ -20,42 +19,14 @@ function Assistant() {
         SetNewCustomerQuery(e.target.value);
     };
 
-    const callOpenAIAPI = async (customerQuery) => {
-        const apiBody = {
-            model: "gpt-4o-mini",
-            messages: [
-                {
-                    role: "system",
-                    content: SYSTEM_CONTEXT_SUDGESTION_PROMP
-                },
-                {
-                    role: "user",
-                    content: customerQuery
-                },
-            ],
-            temperature: 0.7
-        };
-
-        await fetch('https://api.openai.com/v1/chat/completions', {
-            method: 'POST',
-            headers: {
-                "Content-Type": 'application/json',
-                Authorization: `Bearer ${OPENAI_API_KEY}`
-            },
-            body: JSON.stringify(apiBody)
-        }).then((data) => {
-            return data.json();
-        }).then((data) => {
-            const response = data?.choices[0]?.message?.content.trim();
-            setSuggestedResponse(response);
-        }).catch((e) => console.log(e)); // do something here like error boundary
-    };
-
     const handleSendMessageToAssistant = () => {
-        callOpenAIAPI(newCustomerQuery);
+        openAiService.getSuggestedResponse(newCustomerQuery)
+            .then((response) => {
+                setSuggestedResponse(response);
+            })
+            .catch((error) => console.log(error));
         SetLastCustomerQuery(newCustomerQuery);
         SetNewCustomerQuery('');
-        setSuggestedResponse('');
     };
 
     const handleSendMessageToCustomer = () => {

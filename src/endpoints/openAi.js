@@ -1,0 +1,1 @@
+export const openAiEndpoint = 'https://api.openai.com/v1/chat/completions';
