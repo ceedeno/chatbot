@@ -1,4 +1,4 @@
-import { Button, Dialog, DialogActions, DialogContent, DialogTitle, styled } from '@mui/material';
+import { Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, styled } from '@mui/material';
 import PropTypes from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
 import { closeEditor, setEditorContent } from '../../../../redux/actions/editor';
@@ -11,9 +11,15 @@ import Underline from '@tiptap/extension-underline';
 import Bold from '@tiptap/extension-bold';
 import Italic from '@tiptap/extension-italic';
 import Strike from '@tiptap/extension-strike';
+import FormatBoldOutlinedIcon from '@mui/icons-material/FormatBoldOutlined';
+import FormatUnderlinedOutlinedIcon from '@mui/icons-material/FormatUnderlinedOutlined';
+import FormatItalicOutlinedIcon from '@mui/icons-material/FormatItalicOutlined';
+import StrikethroughSOutlinedIcon from '@mui/icons-material/StrikethroughSOutlined';
+import HighlightOutlinedIcon from '@mui/icons-material/HighlightOutlined';
 import { sendMessage } from '../../../../redux/actions/chat';
 import { generateNewMessage } from '../../../../utility/helpers';
 import { useCallback } from 'react';
+import { isInputEmpty, isInputUnsafe } from '../../../../utility/validator';
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
     '& .MuiDialogContent-root': {
@@ -49,37 +55,34 @@ const Editor = ({ onEditorUpdate, content }) => {
     return (
         <div className="control-group">
             <div className="button-group">
-                <button
+                <Button
                     onClick={() => editor.chain().focus().toggleBold().run()}
-                    className={editor.isActive('bold') ? 'is-active' : ''}
                 >
-                    Bold
-                </button>
-                <button
+                    <FormatBoldOutlinedIcon />
+                </Button>
+                <Button
                     onClick={() => editor.chain().focus().toggleItalic().run()}
-                    className={editor.isActive('italic') ? 'is-active' : ''}
                 >
-                    Italic
-                </button>
-                <button
+                    <FormatItalicOutlinedIcon />
+                </Button>
+                <Button
                     onClick={() => editor.chain().focus().toggleUnderline().run()}
-                    className={editor.isActive('underline') ? 'is-active' : ''}
                 >
-                    Underline
-                </button>
-                <button
+                    <FormatUnderlinedOutlinedIcon />
+                </Button>
+                <Button
                     onClick={() => editor.chain().focus().toggleStrike().run()}
-                    className={editor.isActive('strike') ? 'is-active' : ''}
                 >
-                    Strike
-                </button>
-                <button
+                    <StrikethroughSOutlinedIcon />
+                </Button>
+                <Button
                     onClick={() => editor.chain().focus().toggleHighlight().run()}
-                    className={editor.isActive('highlight') ? 'is-active' : ''}
                 >
-                    Highlight
-                </button>
-                <EditorContent editor={editor} />
+                    <HighlightOutlinedIcon />
+                </Button>
+                <Box sx={{ minHeight: '30px', border: 1, borderColor: 'grey[500]' }}>
+                    <EditorContent editor={editor} />
+                </Box>
             </div>
         </div>
     );
@@ -140,7 +143,9 @@ const MessageEditor = ({ setInputMessage }) => {
                     <Button onClick={handleClose}>
                         CANCEL
                     </Button>
-                    <Button autoFocus onClick={handleSendToCustomer}>
+                    <Button
+                        onClick={handleSendToCustomer}
+                        disabled={isInputUnsafe(editorContent) || isInputEmpty(editorContent)}>
                         SEND
                     </Button>
                 </DialogActions>

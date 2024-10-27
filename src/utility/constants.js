@@ -57,3 +57,4 @@ export const MESSAGE_TEMPLATES = [
 ];
 
 export const MESSAGE_SENTIMENT_DESCRIPTION = 'Message sentiment measures the emotional tone of a message, rated from 1 to 10: 1-3 for negative, 4-7 for neutral, and 8-10 for positive sentiments.';
+export const TEMPLATES_DESCRIPTION = 'Templates for frequently asked questions';

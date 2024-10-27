@@ -6,22 +6,23 @@ import TextField from '@mui/material/TextField';
 import { sendMessage } from '../../../redux/actions/chat';
 import { openEditor, setEditorContent } from '../../../redux/actions/editor';
 import { generateNewMessage, parseToParagraph, tryParseInt } from '../../../utility/helpers';
-import { isInputUnsafe } from '../../../utility/validator';
+import { isInputEmpty, isInputUnsafe } from '../../../utility/validator';
 import PropTypes from 'prop-types';
 import { userType } from '../../../utility/constants';
 import openAiService from '../../../utility/openia_service';
 import { setSentiment } from '../../../redux/actions/sentiment';
+import { useCallback } from 'react';
 
 function InputBar({ message, setMessage }) {
     const currentUser = useSelector((state) => state.currentUser.currentUserInfo);
     const recipientInfo = useSelector((state) => state.chat.recipientInfo);
     const dispatch = useDispatch();
 
-    const handleInputChange = (e) => {
+    const handleInputChange = useCallback((e) => {
         setMessage(e.target.value);
-    };
+    }, [setMessage]);
 
-    const handleSendMessage = () => {
+    const handleSendMessage = useCallback(() => {
         dispatch(sendMessage(generateNewMessage(
             parseToParagraph(message),
             currentUser?.userId,
@@ -36,12 +37,12 @@ function InputBar({ message, setMessage }) {
         }
         setMessage('');
 
-    };
+    }, [currentUser?.userId, currentUser.userType, dispatch, message, recipientInfo?.userId, setMessage]);
 
-    const handleEdit = () => {
+    const handleEdit = useCallback(() => {
         dispatch(setEditorContent(parseToParagraph(message)));
         dispatch(openEditor());
-    };
+    }, [dispatch, message]);
 
     return (
         <Box sx={{ p: 2 }}>
@@ -72,7 +73,7 @@ function InputBar({ message, setMessage }) {
                     variant="text"
                     aria-label="edit"
                     onClick={handleSendMessage}
-                    disabled={isInputUnsafe(message)}>
+                    disabled={isInputUnsafe(message) || isInputEmpty(message)}>
                     <SendIcon />
                 </Button>
             </Box>

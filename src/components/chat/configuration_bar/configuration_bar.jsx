@@ -1,5 +1,5 @@
 import { Box, ToggleButton, ToggleButtonGroup } from '@mui/material';
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { AGENT_USER_INFO, CUSTOMER_USER_INFO } from '../../../utility/constants';
 import { setCurrentUser } from '../../../redux/actions/current_user';
@@ -9,7 +9,7 @@ function ConfigurationBar() {
     const [user, setUser] = useState('agent');
     const dispatch = useDispatch();
 
-    const handleUserChange = (e) => {
+    const handleUserChange = useCallback((e) => {
         const selectedUser = e.target.value;
         setUser(selectedUser);
         if (selectedUser === 'customer') {
@@ -19,7 +19,7 @@ function ConfigurationBar() {
             dispatch(setCurrentUser(AGENT_USER_INFO));
             dispatch(setRecipientInfo(CUSTOMER_USER_INFO));
         }
-    };
+    },[dispatch]);
 
     return (
         <Box sx={{ p: 1, backgroundColor: 'action.hover' }}>

@@ -1,22 +1,35 @@
-import { Box, Button, Card, CardActions, CardContent, Paper, Typography } from '@mui/material';
-import { MESSAGE_TEMPLATES } from '../../utility/constants';
+import { Box, Button, Card, CardActions, CardContent, Paper, Tooltip, Typography } from '@mui/material';
+import { MESSAGE_TEMPLATES, TEMPLATES_DESCRIPTION } from '../../utility/constants';
 import { useDispatch } from 'react-redux';
+import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import { openEditor, setEditorContent } from '../../redux/actions/editor';
+import { useCallback } from 'react';
 
 function TemplateMessages() {
     const dispatch = useDispatch();
 
-    const handleUseTemplate = (text) => {
+    const handleUseTemplate = useCallback((text) => {
         dispatch(setEditorContent(text));
         dispatch(openEditor());
-    };
+    }, [dispatch]);
 
     return (
-        <Paper elevation={3} sx={{ minWidth: '350px' }}>
+        <Paper elevation={3} sx={{ p: 2, minWidth: '350px', maxHeight: '700px' }}>
+            <Box sx={{ p: 1, display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
+                <Typography
+                    variant="h6"
+                    color="primary.main"
+                >
+                    Templates
+                </Typography>
+                <Tooltip title={TEMPLATES_DESCRIPTION}>
+                    <InfoOutlinedIcon />
+                </Tooltip>
+            </Box>
             <Box
                 sx={{
                     p: 1,
-                    height: '700px',
+                    height: '600px',
                     overflowY: 'scroll'
                 }}>
                 {MESSAGE_TEMPLATES.map((template) => (

@@ -14,6 +14,7 @@ import PropTypes from 'prop-types';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import { useSelector } from 'react-redux';
 import { removeHTMLTags } from '../../../../utility/helpers';
+import { useCallback } from 'react';
 
 const StyledLeftMessagePaper = styled(Paper)(({ theme }) => ({
     width: 300,
@@ -51,10 +52,10 @@ function Message({ content, senderId }) {
         editable: false
     });
 
-    const handleCopy = async () => {
+    const handleCopy = useCallback(async () => {
         const pureStringContent = removeHTMLTags(content);
         await navigator.clipboard.writeText(pureStringContent);
-    };
+    }, [content]);
 
     return (
         <Box sx={{ width: 1 }}>
