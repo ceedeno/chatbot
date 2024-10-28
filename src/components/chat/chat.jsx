@@ -10,7 +10,7 @@ function Chat() {
 
     return (
         <Paper elevation={3}>
-            <Box style={{ minHeight: '700px', maxHeight: '800px', minWidth: '500px', maxWidth: '500px' }}>
+            <Box style={{ height: '730px' }}>
                 <ConfigurationBar />
                 <ChatBody />
                 <InputBar

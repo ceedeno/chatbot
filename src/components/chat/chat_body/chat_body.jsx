@@ -19,7 +19,6 @@ function ChatBody() {
             sx={{
                 height: '540px',
                 p: 1,
-                minWidth: '300px',
                 border: 1,
                 borderColor: 'grey.500',
                 overflowY: 'scroll'

@@ -14,8 +14,8 @@ function TemplateMessages() {
     }, [dispatch]);
 
     return (
-        <Paper elevation={3} sx={{ minWidth: '350px' }}>
-            <Box sx={{ height: '100%', backgroundColor: 'action.hover' }}>
+        <Paper elevation={3}>
+            <Box sx={{ height: '730px', backgroundColor: 'action.hover' }}>
                 <Box sx={{ p: 2, display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
                     <Typography
                         variant="h6"
@@ -39,7 +39,7 @@ function TemplateMessages() {
                                 <Typography variant="h6" component="div">
                                     {template.title}
                                 </Typography>
-                                <Typography sx={{ color: 'text.secondary', mb: 1.5, fontSize: 14 }}>
+                                <Typography sx={{ color: 'text.secondary', mb: 1.5, fontSize: 14, textAlign: 'initial' }}>
                                     {template.text}
                                 </Typography>
                             </CardContent>

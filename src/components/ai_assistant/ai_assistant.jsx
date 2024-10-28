@@ -42,7 +42,7 @@ function Assistant() {
     }, [dispatch, suggestedResponse]);
 
     return (
-        <Paper elevation={3} sx={{ height: '480px', minWidth: '350px' }}>
+        <Paper elevation={3} sx={{ height: '480px' }}>
             <Box sx={{
                 p: 2,
                 height: '100%',
@@ -59,7 +59,7 @@ function Assistant() {
             </Box>
                 <Box sx={{ height: '300px', overflowY: 'scroll', p: 1 }}>
                     {lastCustomerQuery ? (
-                        <Card sx={{ minWidth: 275, backgroundColor: 'action.hover' }}>
+                        <Card sx={{ backgroundColor: 'action.hover' }}>
                             <CardContent>
                                 <blockquote>
                                     <Typography gutterBottom sx={{ color: 'text.secondary', fontSize: 14, fontStyle: 'italic' }}>
