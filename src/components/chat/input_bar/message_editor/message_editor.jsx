@@ -16,7 +16,9 @@ import FormatUnderlinedOutlinedIcon from '@mui/icons-material/FormatUnderlinedOu
 import FormatItalicOutlinedIcon from '@mui/icons-material/FormatItalicOutlined';
 import StrikethroughSOutlinedIcon from '@mui/icons-material/StrikethroughSOutlined';
 import HighlightOutlinedIcon from '@mui/icons-material/HighlightOutlined';
+import AddLinkIcon from '@mui/icons-material/AddLink';
 import { sendMessage } from '../../../../redux/actions/chat';
+import Link from '@tiptap/extension-link';
 import { generateNewMessage } from '../../../../utility/helpers';
 import { useCallback } from 'react';
 import { isInputEmpty, isInputUnsafe } from '../../../../utility/validator';
@@ -40,6 +42,11 @@ const Editor = ({ onEditorUpdate, content }) => {
             Italic,
             Underline,
             Strike,
+            Link.configure({
+                openOnClick: false,
+                autolink: true,
+                defaultProtocol: 'https',
+            }),
             Highlight.configure({ multicolor: true }),
         ],
         content,
@@ -47,6 +54,26 @@ const Editor = ({ onEditorUpdate, content }) => {
             onEditorUpdate(editor.getHTML());
         }
     });
+
+    const setLink = useCallback(() => {
+        const previousUrl = editor.getAttributes('link').href;
+        const url = window.prompt('URL', previousUrl);
+
+        // cancelled
+        if (url === null) {
+            return;
+        }
+
+        // empty
+        if (url === '') {
+            editor.chain().focus().extendMarkRange('link').unsetLink().run();
+            return;
+        }
+
+        // update link
+        editor.chain().focus().extendMarkRange('link').setLink({ href: url })
+            .run();
+    }, [editor]);
 
     if (!editor) {
         return null;
@@ -79,6 +106,9 @@ const Editor = ({ onEditorUpdate, content }) => {
                     onClick={() => editor.chain().focus().toggleHighlight().run()}
                 >
                     <HighlightOutlinedIcon />
+                </Button>
+                <Button onClick={setLink} className={editor.isActive('link') ? 'is-active' : ''}>
+                    <AddLinkIcon />
                 </Button>
                 <Box sx={{ minHeight: '30px', border: 1, borderColor: 'grey[500]' }}>
                     <EditorContent editor={editor} />

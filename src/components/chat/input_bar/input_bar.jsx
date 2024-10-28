@@ -19,6 +19,7 @@ function InputBar({ message, setMessage }) {
     const dispatch = useDispatch();
 
     const handleInputChange = useCallback((e) => {
+        console.log(e);
         setMessage(e.target.value);
     }, [setMessage]);
 
@@ -33,16 +34,22 @@ function InputBar({ message, setMessage }) {
                 .then((response) => {
                     dispatch(setSentiment(tryParseInt(response)));
                 })
-                .catch((error) => console.log(error));
+                .catch((error) => console.log(error)); // TO-DO: Add error toast
         }
         setMessage('');
-
     }, [currentUser?.userId, currentUser.userType, dispatch, message, recipientInfo?.userId, setMessage]);
 
     const handleEdit = useCallback(() => {
         dispatch(setEditorContent(parseToParagraph(message)));
         dispatch(openEditor());
     }, [dispatch, message]);
+
+    const handleKeyDown = useCallback((event) => {
+        if (event.key === 'Enter' && !(isInputUnsafe(message) || isInputEmpty(message))) {
+            event.stopPropagation();
+            handleSendMessage();
+        }
+      }, [handleSendMessage, message]);
 
     return (
         <Box sx={{ p: 2 }}>
@@ -65,6 +72,7 @@ function InputBar({ message, setMessage }) {
                     placeholder="Reply to customer..."
                     value={message}
                     onChange={handleInputChange}
+                    onKeyDown={handleKeyDown}
                     multiline
                     maxRows={2}
                 />

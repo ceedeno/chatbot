@@ -39,7 +39,6 @@ export const tryParseInt = (str, defaultValue = 0) => {
   // TO-DO: research a better way to parse strings to html <p> strings
   export const parseToParagraph = (text) => {
     const splitText = text.split('\n\n');
-    console.log(splitText);
     const paragraphArray = splitText.map((text) => '<p>' + text + '</p>');
     return paragraphArray.join('');
   };

@@ -10,6 +10,7 @@ import Underline from '@tiptap/extension-underline';
 import Bold from '@tiptap/extension-bold';
 import Italic from '@tiptap/extension-italic';
 import Strike from '@tiptap/extension-strike';
+import Link from '@tiptap/extension-link';
 import PropTypes from 'prop-types';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import { useSelector } from 'react-redux';
@@ -46,6 +47,11 @@ function Message({ content, senderId }) {
             Italic,
             Underline,
             Strike,
+            Link.configure({
+                openOnClick: true,
+                autolink: true,
+                defaultProtocol: 'https',
+            }),
             Highlight.configure({ multicolor: true })
         ],
         content,

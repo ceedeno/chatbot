@@ -7,6 +7,5 @@ export const isInputUnsafe = (content) => {
 
 export const isInputEmpty = (content) => {
     const isEmpty = removeHTMLTags(content) === '';
-    console.log(isEmpty, removeHTMLTags(content));
     return isEmpty;
 };

@@ -24,7 +24,7 @@ function Assistant() {
             .then((response) => {
                 setSuggestedResponse(response);
             })
-            .catch((error) => console.log(error));
+            .catch((error) => console.log(error)); // TO-DO: Add error toast and implement ErrorBoundary
         setLastCustomerQuery(newCustomerQuery);
         setNewCustomerQuery('');
     }, [newCustomerQuery]);
@@ -42,7 +42,7 @@ function Assistant() {
     }, [dispatch, suggestedResponse]);
 
     return (
-        <Paper elevation={3} sx={{ height: '480px' }}>
+        <Paper elevation={3} sx={{ height: '485px' }}>
             <Box sx={{
                 p: 2,
                 height: '100%',
@@ -57,7 +57,7 @@ function Assistant() {
                     AI Assistant
                 </Typography>
             </Box>
-                <Box sx={{ height: '300px', overflowY: 'scroll', p: 1 }}>
+                <Box sx={{ height: '290px', overflowY: 'scroll', p: 1 }}>
                     {lastCustomerQuery ? (
                         <Card sx={{ backgroundColor: 'action.hover' }}>
                             <CardContent>
