@@ -49,9 +49,17 @@ function Assistant() {
                 display: 'flex',
                 flexDirection: 'column',
             }}>
-                <Box sx={{ height: '320px', overflowY: 'scroll', p: 1 }}>
+                <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'start' }}>
+                <Typography
+                    variant="h6"
+                    color="primary.main"
+                >
+                    AI Assistant
+                </Typography>
+            </Box>
+                <Box sx={{ height: '300px', overflowY: 'scroll', p: 1 }}>
                     {lastCustomerQuery ? (
-                        <Card sx={{ minWidth: 275 }}>
+                        <Card sx={{ minWidth: 275, backgroundColor: 'action.hover' }}>
                             <CardContent>
                                 <blockquote>
                                     <Typography gutterBottom sx={{ color: 'text.secondary', fontSize: 14, fontStyle: 'italic' }}>

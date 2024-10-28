@@ -14,39 +14,41 @@ function TemplateMessages() {
     }, [dispatch]);
 
     return (
-        <Paper elevation={3} sx={{ p: 2, minWidth: '350px', maxHeight: '700px' }}>
-            <Box sx={{ p: 1, display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
-                <Typography
-                    variant="h6"
-                    color="primary.main"
-                >
-                    Templates
-                </Typography>
-                <Tooltip title={TEMPLATES_DESCRIPTION}>
-                    <InfoOutlinedIcon />
-                </Tooltip>
-            </Box>
-            <Box
-                sx={{
-                    p: 1,
-                    height: '600px',
-                    overflowY: 'scroll'
-                }}>
-                {MESSAGE_TEMPLATES.map((template) => (
-                    <Card key={template.id} sx={{ m: 1 }}>
-                        <CardContent>
-                            <Typography variant="h6" component="div">
-                                {template.title}
-                            </Typography>
+        <Paper elevation={3} sx={{ minWidth: '350px' }}>
+            <Box sx={{ height: '100%', backgroundColor: 'action.hover' }}>
+                <Box sx={{ p: 2, display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
+                    <Typography
+                        variant="h6"
+                        color="primary.main"
+                    >
+                        Templates
+                    </Typography>
+                    <Tooltip title={TEMPLATES_DESCRIPTION}>
+                        <InfoOutlinedIcon sx={{ color: 'warning.light' }} />
+                    </Tooltip>
+                </Box>
+                <Box
+                    sx={{
+                        p: 1,
+                        height: '600px',
+                        overflowY: 'scroll'
+                    }}>
+                    {MESSAGE_TEMPLATES.map((template) => (
+                        <Card key={template.id} sx={{ m: 1 }}>
+                            <CardContent>
+                                <Typography variant="h6" component="div">
+                                    {template.title}
+                                </Typography>
                                 <Typography sx={{ color: 'text.secondary', mb: 1.5, fontSize: 14 }}>
                                     {template.text}
                                 </Typography>
-                        </CardContent>
-                        <CardActions>
-                            <Button size="small" onClick={() => handleUseTemplate(template.text)}>USE TEMPLATE</Button>
-                        </CardActions>
-                    </Card>
-                ))}
+                            </CardContent>
+                            <CardActions>
+                                <Button size="small" onClick={() => handleUseTemplate(template.text)}>USE TEMPLATE</Button>
+                            </CardActions>
+                        </Card>
+                    ))}
+                </Box>
             </Box>
         </Paper>
     );

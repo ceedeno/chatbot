@@ -20,7 +20,7 @@ function Sentiment() {
                     Sentiment
                 </Typography>
                 <Tooltip title={MESSAGE_SENTIMENT_DESCRIPTION}>
-                    <InfoOutlinedIcon />
+                    <InfoOutlinedIcon sx={{ color: 'warning.light' }} />
                 </Tooltip>
             </Box>
             <Box sx={{ height: '130px' }}>
